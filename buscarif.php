@@ -23,7 +23,6 @@ function buscarif(){
 			var documento = $("#txtrif").val();
 			//Se obtiene el digito verificador para hacer una búsqueda de un rif que comience por V
 			var stDigito = digitoVerificador(documento, "V");
-			$("#txtrif").val("V"+documento+stDigito);
 			consultarif("V"+documento+stDigito);
 		}else
 			alert("Verifique el Rif Suministrado");
@@ -40,7 +39,7 @@ function consultarif(rif){
 	//se usa corsproxy para que salte la restriccion de dominios cruzados
 	$.get('http://www.corsproxy.com/contribuyente.seniat.gob.ve/getContribuyente/getrif', data, function(xml){
 			var datosrif = $.xml2json(xml);
-			var stDatos="<div><strong>Rif:</strong>"+$("#txtrif").val()+"</div>";
+			var stDatos="<div><strong>Rif:</strong>"+rif+"</div>";
 			stDatos+="<div><strong>Nombre:</strong>"+datosrif.Nombre+"</div>";
 			stDatos+="<div><strong>Agente de Retencion:</strong>"+datosrif.AgenteRetencionIVA+"</div>";
 			stDatos+="<div><strong>Tasa de Retencion:</strong>"+datosrif.Tasa+"</div>";
@@ -64,24 +63,24 @@ function digitoVerificador(documento, caracter){
 	var arrnumeros= [];
 	var digitoEspecial;
 	var resultado;
-		arrnumeros[7] = parseInt(documento[7])*2;
-		arrnumeros[6] = parseInt(documento[6])*3;
-		arrnumeros[5] = parseInt(documento[5])*4;
-		arrnumeros[4] = parseInt(documento[4])*5;
-		arrnumeros[3] = parseInt(documento[3])*6;
-		arrnumeros[2] = parseInt(documento[2])*7;
-		arrnumeros[1] = parseInt(documento[1])*2;
-		arrnumeros[0] = parseInt(documento[0])*3;
-		var suma=0;
-		for (var i = 0; i < arrnumeros.length; i++) {
-			suma+=arrnumeros[i];
-		};
-		if (caracter=="V"){
-			digitoEspecial = 1;
-			suma += 4;
-		}
-		resultado = 11-(suma%11);
-		return (resultado);
+	arrnumeros[7] = parseInt(documento[7])*2;
+	arrnumeros[6] = parseInt(documento[6])*3;
+	arrnumeros[5] = parseInt(documento[5])*4;
+	arrnumeros[4] = parseInt(documento[4])*5;
+	arrnumeros[3] = parseInt(documento[3])*6;
+	arrnumeros[2] = parseInt(documento[2])*7;
+	arrnumeros[1] = parseInt(documento[1])*2;
+	arrnumeros[0] = parseInt(documento[0])*3;
+	var suma=0;
+	for (var i = 0; i < arrnumeros.length; i++) {
+		suma+=arrnumeros[i];
+	};
+	if (caracter=="V"){
+		digitoEspecial = 1;
+		suma += 4;
+	}
+	resultado = 11-(suma%11);
+	return (resultado);
 }
 </script>
 </html>
