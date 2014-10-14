@@ -30,6 +30,9 @@ function buscarif(){
 
 }
 //función que revisa el rif
+/*
+	rif: El documento completo sin espacios ej V168885551
+*/
 function consultarif(rif){
 	var data = {};
 	data.rif=rif;
