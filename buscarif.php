@@ -21,6 +21,7 @@ function buscarif(){
 		var regEsCedula = new RegExp("^([0-9]{8})$");
 		if(regEsCedula.test($("#txtrif").val())){
 			var documento = $("#txtrif").val();
+			//Se obtiene el digito verificador para hacer una búsqueda de un rif que comience por V
 			var stDigito = digitoVerificador(documento, "V");
 			$("#txtrif").val("V"+documento+stDigito);
 			consultarif("V"+documento+stDigito);
@@ -55,6 +56,9 @@ function consultarif(rif){
 /*
 	documento: string con la cadena de numeros del documento
 	caracter: prefijo (V hasta el momento)
+
+	Función desarrollada basado en la elaborada por @joseayram en php (https://github.com/joseayram/utils/blob/master/Rif.php)
+			Y en información obtenida en Digito Verificador del RIF - Serrano Cid Asesores (http://www.serranocid.com/documentos/Digito%20Verificador%20RIF.xls)
 */
 function digitoVerificador(documento, caracter){
 	var arrnumeros= [];
