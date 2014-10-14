@@ -20,8 +20,10 @@ function buscarif(){
 		//si no lo es verifico si se parece a una cedula
 		var regEsCedula = new RegExp("^([0-9]{8})$");
 		if(regEsCedula.test($("#txtrif").val())){
-			//aquí debería haber un código que verifique el rif desde la cedula
-			alert("Es cedula");
+			var documento = $("#txtrif").val();
+			var stDigito = digitoVerificador(documento, "V");
+			$("#txtrif").val("V"+documento+stDigito);
+			consultarif("V"+documento+stDigito);
 		}else
 			alert("Verifique el Rif Suministrado");
 	}
@@ -42,11 +44,37 @@ function consultarif(rif){
 			$("#datos").html(stDatos);
 	}).fail(function(){ 
   		alert("Error en el Rif Buscado");
+	}).load(function(){ 
+		$("#datos").html("<h1>Buscando</h1>");
 	});
 }
 
-function digitoVerificador(cedula){
-	
+/*
+	documento: string con la cadena de numeros del documento
+	caracter: prefijo (V hasta el momento)
+*/
+function digitoVerificador(documento, caracter){
+	var arrnumeros= [];
+	var digitoEspecial;
+	var resultado;
+		arrnumeros[7] = parseInt(documento[7])*2;
+		arrnumeros[6] = parseInt(documento[6])*3;
+		arrnumeros[5] = parseInt(documento[5])*4;
+		arrnumeros[4] = parseInt(documento[4])*5;
+		arrnumeros[3] = parseInt(documento[3])*6;
+		arrnumeros[2] = parseInt(documento[2])*7;
+		arrnumeros[1] = parseInt(documento[1])*2;
+		arrnumeros[0] = parseInt(documento[0])*3;
+		var suma=0;
+		for (var i = 0; i < arrnumeros.length; i++) {
+			suma+=arrnumeros[i];
+		};
+		if (caracter=="V"){
+			digitoEspecial = 1;
+			suma += 4;
+		}
+		resultado = 11-(suma%11);
+		return (resultado);
 }
 </script>
 </html>
